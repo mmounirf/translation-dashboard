@@ -27,7 +27,7 @@
     "**/*.tsx"
   ],
   "paths": {
-
+    "components/*": ["components/*"]
   },
   "exclude": [
     "./build",

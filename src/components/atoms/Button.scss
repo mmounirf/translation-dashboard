@@ -1,0 +1,11 @@
+@import '/src/styles//mixins.scss';
+
+.button {
+    &__primary {
+        @include primary-button;
+    }
+
+    &__secondary{
+        @include secondary-button;
+    }
+}
