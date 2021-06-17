@@ -27,11 +27,7 @@
     "**/*.tsx"
   ],
   "paths": {
-    "components/*": [
-      "./src/components/*",
-      "./src/interfaces/*",
-      "./src/constants/*"
-    ]
+
   },
   "exclude": [
     "./build",
