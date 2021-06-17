@@ -1,0 +1,28 @@
+@import '/src/styles/varibles.scss';
+
+.autocomplete {
+    border: 1px solid $color-chinese-silver;
+    padding: 5px 15px 5px 4px;
+    height: 35px;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+
+    &__input {
+        outline: none;
+        border: none;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chips-list {
+        &__item {
+            background-color: $color-platinum;
+            padding: 8px 5px;
+            height: 25px;
+            border-radius: $border-radius;
+            margin-right: 5px;
+        }
+    }
+}
