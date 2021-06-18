@@ -10,7 +10,7 @@ const items = [
 function App(): JSX.Element {
     return (
         <div className="App">
-            <Autocomplete options={items} />
+            <Autocomplete options={items} onChange={items => console.log(items)}/>
         </div>
     );
 }

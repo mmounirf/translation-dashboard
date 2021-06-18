@@ -1,3 +1,4 @@
+import { Fragment, useState, useEffect } from 'react';
 import './Autocomplete.scss';
 
 interface AutocompleteListItem {
@@ -9,42 +10,81 @@ type AutocompleteListProps = Pick<Props, 'options'>;
 
 interface Props {
     options: Array<AutocompleteListItem>;
-    placeholder?: string;
-}
-
-function AutocompleteList({ options }: AutocompleteListProps): JSX.Element {
-    return (
-        <ul className="autocomplete__options">
-            {options.map(({ key, value }) => (
-                <li key={key}>{value}</li>
-            ))}
-        </ul>
-    );
+    onChange: (selectedItems: Array<AutocompleteListItem>) => void
 }
 
 function AutocompleteChips({ options }: AutocompleteListProps): JSX.Element {
     return (
-        <div className="chips-list">
+        <Fragment>
             {options.map(({ key, value }) => (
-                <span className="chips-list__item" key={key}>
+                <span className="autocomplete__selected-item" key={key}>
                     {value}
                 </span>
             ))}
-        </div>
+        </Fragment>
     );
 }
 
-function Autocomplete({ options, placeholder = 'Select Language' }: Props): JSX.Element {
-    const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => console.log(event);
-    const selectedItems = [
-        { key: '1', value: 'Egypt' },
-        { key: '2', value: 'USA' }
-    ];
+const selectedItems: Array<AutocompleteListItem> = Array(25)
+    .fill('item')
+    .map((item, i) => {
+        return {
+            key: `${i}`,
+            value: `Language ${i}`
+        };
+    });
+
+function Autocomplete({ options, onChange }: Props): JSX.Element {
+    const [showList, setShowList] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [filteredOptions, setFilteredOptions] = useState(selectedItems);
+
+    const onItemSelect = (selectedItem: AutocompleteListItem) => {
+        onChange(selectedItems);
+    }
+
+    function AutocompleteList({ options }: AutocompleteListProps): JSX.Element {
+        return (
+            <ul className="autocomplete__list">
+                {options.map(({ key, value }) => (
+                    <li className="autocomplete__list-item" key={key} onClick={() => onItemSelect({key, value})}>
+                        {value}
+                    </li>
+                ))}
+                {options.length === 0 && inputValue && (
+                    <li className="autocomplete__list-item autocomplete__list-item--not-results">
+                        No language matches <strong>{inputValue}</strong>
+                    </li>
+                )}
+            </ul>
+        );
+    }
+
+    useEffect(() => {
+        if (inputValue) {
+            setShowList(true);
+            const filterResults = selectedItems.filter((item) => item.value.toLocaleLowerCase().search(inputValue.toLocaleLowerCase()) !== -1);
+            setFilteredOptions(filterResults);
+        } else {
+            setFilteredOptions(selectedItems);
+        }
+    }, [inputValue]);
+
     return (
         <div className="autocomplete">
-            <AutocompleteChips options={selectedItems} />
-            <input className="autocomplete__input" type="text" autoComplete="off" placeholder={placeholder} onChange={onInputChange} />
-            {/* <AutocompleteList options={options} /> */}
+            <div className="autocomplete__content">
+                <AutocompleteChips options={selectedItems} />
+                <input
+                    className="autocomplete__input"
+                    type="text"
+                    value={inputValue}
+                    autoComplete="off"
+                    onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => setInputValue(target.value)}
+                    onFocus={() => setShowList(true)}
+                    onBlur={() => setTimeout(() => setShowList(false), 100)}
+                />
+            </div>
+            {showList && <AutocompleteList options={filteredOptions} />}
         </div>
     );
 }
