@@ -31,7 +31,7 @@
         flex: 1;
     }
 
-    &__list {
+    &__options {
         width: 100%;
         list-style: none;
         padding: 4px 0;
@@ -42,22 +42,23 @@
         border: 1px solid $color-chinese-silver;
         max-height: 300px;
         overflow-y: scroll;
-    }
 
-    &__list-item {
-        padding: 9px 14px;
-        color: $color-gray-1;
-        background-color: $color-white;
-        cursor: pointer;
-        @include smooth-transition(background-color, color);
-
-        &--not-results {
+        &--no-results {
             pointer-events: none;
         }
 
-        &:hover {
-            background-color: $color-primary;
-            color: $color-white;
+        > * {
+            padding: 9px 14px;
+            color: $color-gray-1;
+            background-color: $color-white;
+            cursor: pointer;
+            @include smooth-transition(background-color, color);
+    
+            &:hover {
+                background-color: $color-primary;
+                color: $color-white;
+            }
         }
     }
+
 }

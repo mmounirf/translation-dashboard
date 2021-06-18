@@ -1,16 +1,25 @@
 import './App.scss';
-import Autocomplete from './components/molecules/Autocomplete/Autocomplete';
-
-const items = [
-    { key: '1', value: 'Egypt' },
-    { key: '2', value: 'USA' },
-    { key: '3', value: 'Germany' }
-];
+import Autocomplete, { SelectedItem } from './components/molecules/Autocomplete/Autocomplete';
+import data from 'src/assets/data.json';
+import { useState } from 'react';
 
 function App(): JSX.Element {
+    const [selected, setSelected] = useState<SelectedItem[]>([]);
     return (
         <div className="App">
-            <Autocomplete options={items} onChange={items => console.log(items)}/>
+            <Autocomplete
+                options={data}
+                selected={selected}
+                searchableValue="name"
+                renderOption={(option, onSelect) => {
+                    const { name, code = '', countryName, countryCode, flag } = option;
+                    return (
+                        <li key={`${code}_${countryCode}`} onClick={() => onSelect(option)}>
+                            <img src={flag} width="20px"/> {name} ({countryName}) ({code}_{countryCode})
+                        </li>
+                    )
+                }}
+            />
         </div>
     );
 }
