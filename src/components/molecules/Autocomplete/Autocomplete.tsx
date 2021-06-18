@@ -1,42 +1,57 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import './Autocomplete.scss';
 import { Chip } from 'src/components/atoms';
 
-export interface SelectedItem {
-    key: string,
-    value: string
-}
-
 interface Props<T> {
-    options: T[],
-    searchableValue: keyof T,
-    selected?: SelectedItem[],
+    options: T[];
+    searchableValue: keyof T;
+    onChange: (selectedOptions: T[]) => void;
     renderOption: (option: T, onSelect: (selectedItem: T) => void) => React.ReactNode;
 }
 
-function Autocomplete<T>({ options, searchableValue, selected = [], renderOption }: Props<T>): JSX.Element {
+function Autocomplete<T>({ options, searchableValue, onChange, renderOption }: Props<T>): JSX.Element {
     const [showList, setShowList] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [selectedOptions, setSelectedOptions] = useState<SelectedItem[]>(selected);
+    const [selectedOptions, setSelectedOptions] = useState<T[]>([]);
     const [filteredOptions, setFilteredOptions] = useState<T[]>(options);
-    const _renderSelectedList = selected.map(({ key, value }) => <Chip className="autocomplete__selected-item" key={key}>{value}</Chip>);
+    const isSelected = (option: T) => selectedOptions.includes(option);
 
-    const handleSelectedItem = (selectedItem: T) => {
+    const _renderSelectedList = selectedOptions.map(({ name, code, flag, countryCode }: any) => (
+        <Chip className="autocomplete__selected-item" key={code}>
+            <>
+                <img src={flag} width="20px" /> {name} ({code}_{countryCode})
+            </>
+        </Chip>
+    ));
+
+    useEffect(() => {
+        onChange(selectedOptions);
+    }, [selectedOptions])
+
+    const handleSelectedItem = (selectedItem: any) => {
+        if (!isSelected(selectedItem)) {
+            setSelectedOptions([...selectedOptions, selectedItem]);
+        } else {
+            const newSelectedOptions = selectedOptions.filter(
+                (option: any) => option.code !== selectedItem.code && option.countryCode && selectedItem.countryCode
+            );
+            setSelectedOptions(newSelectedOptions);
+        }
         setInputValue('');
-        // setShowList(false);
+        setShowList(false);
+    };
 
-        console.log(selectedItem);
-    }
-    
     const _renderOptionsList = () => {
-        if(!filteredOptions.length) {
-             return (
+        if (!filteredOptions.length) {
+            return (
                 <li className="autocomplete__options--no-results">
                     No option matches <strong>{inputValue}</strong>
                 </li>
-             )   
+            );
         }
-        return filteredOptions.map((option) => renderOption(option, handleSelectedItem))
+        return filteredOptions.map((option) => (
+            <div className={selectedOptions.includes(option) ? 'selected' : ''}>{renderOption(option, handleSelectedItem)}</div>
+        ));
     };
 
     useEffect(() => {

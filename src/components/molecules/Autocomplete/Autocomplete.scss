@@ -43,6 +43,11 @@
         max-height: 300px;
         overflow-y: scroll;
 
+        .selected {
+            background-color: $color-primary;
+            color: $color-white;
+        }
+
         &--no-results {
             pointer-events: none;
         }
@@ -54,7 +59,7 @@
             cursor: pointer;
             @include smooth-transition(background-color, color);
     
-            &:hover {
+            &:hover:not(.selected) {
                 background-color: $color-primary;
                 color: $color-white;
             }
