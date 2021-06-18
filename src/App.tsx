@@ -1,6 +1,8 @@
 import './App.scss';
 import data from 'src/assets/data.json';
 import Autocomplete from './components/molecules/Autocomplete/Autocomplete';
+import { Chip, SvgIcon } from 'src/components/atoms';
+import { ReactComponent as CancelIcon } from 'src/assets/icons/Cancel.svg';
 
 function App(): JSX.Element {
     return (
@@ -9,11 +11,27 @@ function App(): JSX.Element {
                 options={data}
                 searchableValue="name"
                 onChange={(selectedOptions) => console.log(selectedOptions)}
-                renderOption={(option, onSelect) => {
-                    const { name, code = '', countryName, countryCode, flag } = option;
+                renderSelectedOptions={(selectedOption, removeSelectedOption) => {
+                    const { name, code, flag, countryCode } = selectedOption;
                     return (
-                        <div key={`${code}_${countryCode}`} onClick={() => onSelect(option)}>
-                            <img src={flag} width="20px" /> {name} ({countryName}) ({code}_{countryCode})
+                        <Chip className="autocomplete__selected-item" key={code}>
+                        <>
+                            <img src={flag} width="20px" />
+                            <span className="selected-item__label">
+                                {name} ({code}_{countryCode})
+                            </span>
+                            <span className="selected-item__remove" onClick={() => removeSelectedOption(selectedOption)}>
+                                <SvgIcon Icon={CancelIcon} />
+                            </span>
+                        </>
+                    </Chip>
+                    );
+                }}
+                renderOption={(option, onSelect, selectedOptions) => {
+                    const { name, code, countryName, countryCode, flag, id } = option;
+                    return (
+                        <div className={selectedOptions.includes(option) ? 'selected' : ''} key={id} onClick={() => onSelect(option, id)}>
+                            <img src={flag} width="20px" /> {name} ({countryName}) ({id})
                         </div>
                     );
                 }}

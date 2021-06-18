@@ -1,40 +1,41 @@
 import { useState, useEffect, Fragment } from 'react';
 import './Autocomplete.scss';
-import { Chip } from 'src/components/atoms';
+import { Chip, SvgIcon } from 'src/components/atoms';
+import { ReactComponent as CancelIcon } from 'src/assets/icons/Cancel.svg';
 
 interface Props<T> {
     options: T[];
     searchableValue: keyof T;
     onChange: (selectedOptions: T[]) => void;
-    renderOption: (option: T, onSelect: (selectedItem: T) => void) => React.ReactNode;
+    renderSelectedOptions: (selectedOption: T, removeSelectedOption: (selectedOption: T) => void) => React.ReactNode;
+    renderOption: (option: T, onSelect: (selectedItem: T, itemId: string) => void, selectedOptions: T[]) => React.ReactNode;
 }
 
-function Autocomplete<T>({ options, searchableValue, onChange, renderOption }: Props<T>): JSX.Element {
+function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOptions, renderOption }: Props<T>): JSX.Element {
     const [showList, setShowList] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [selectedOptions, setSelectedOptions] = useState<T[]>([]);
     const [filteredOptions, setFilteredOptions] = useState<T[]>(options);
     const isSelected = (option: T) => selectedOptions.includes(option);
 
-    const _renderSelectedList = selectedOptions.map(({ name, code, flag, countryCode }: any) => (
-        <Chip className="autocomplete__selected-item" key={code}>
-            <>
-                <img src={flag} width="20px" /> {name} ({code}_{countryCode})
-            </>
-        </Chip>
-    ));
+    const removeSelectedOption = (option: T) => {
+        const itemIndex = selectedOptions.findIndex((selected) => selected === option);
+        const newArray = [...selectedOptions];
+        newArray.splice(itemIndex, 1);
+        setSelectedOptions(newArray);
+    };
+
+    const _renderSelectedOptions = selectedOptions.map((selectedOption: T) => renderSelectedOptions(selectedOption, removeSelectedOption));
 
     useEffect(() => {
         onChange(selectedOptions);
-    }, [selectedOptions])
+    }, [selectedOptions]);
 
-    const handleSelectedItem = (selectedItem: any) => {
+    const handleSelectedItem = (selectedItem: any, itemId: string) => {
         if (!isSelected(selectedItem)) {
             setSelectedOptions([...selectedOptions, selectedItem]);
         } else {
-            const newSelectedOptions = selectedOptions.filter(
-                (option: any) => option.code !== selectedItem.code && option.countryCode && selectedItem.countryCode
-            );
+            const newSelectedOptions = selectedOptions.filter((option: any) => option.id !== selectedItem.id);
             setSelectedOptions(newSelectedOptions);
         }
         setInputValue('');
@@ -49,9 +50,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderOption }: P
                 </li>
             );
         }
-        return filteredOptions.map((option) => (
-            <div className={selectedOptions.includes(option) ? 'selected' : ''}>{renderOption(option, handleSelectedItem)}</div>
-        ));
+        return filteredOptions.map((option: any) => renderOption(option, handleSelectedItem, selectedOptions));
     };
 
     useEffect(() => {
@@ -70,7 +69,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderOption }: P
     return (
         <div className="autocomplete">
             <div className="autocomplete__content">
-                {_renderSelectedList}
+                {_renderSelectedOptions}
                 <input
                     className="autocomplete__input"
                     type="text"
