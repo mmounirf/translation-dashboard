@@ -5,7 +5,7 @@
         "progress": 45.19,
         "stats": {
             "done": 30.119535519125684,
-            "baseWords": 183,
+            "baseWords": 160246,
             "teamsCount": 26,
             "keysCount": 1834,
             "qaCount": 47514
@@ -14,7 +14,7 @@
             {
                 "id": "ar_EG",
                 "stats": {
-                    "donePercentage": 23.26572,
+                    "donePercentage": 80.27,
                     "untranslatedCount": 27363,
                     "unverifiedCount": 17466
                 }
@@ -22,7 +22,7 @@
             {
                 "id": "de_DE",
                 "stats": {
-                    "donePercentage": 28.73633,
+                    "donePercentage": 11.22,
                     "untranslatedCount": 23764,
                     "unverifiedCount": 46878
                 }
@@ -30,7 +30,7 @@
             {
                 "id": "it_IT",
                 "stats": {
-                    "donePercentage": 23.65908,
+                    "donePercentage": 45.212,
                     "untranslatedCount": 23651,
                     "unverifiedCount": 6441
                 }
@@ -38,7 +38,7 @@
             {
                 "id": "en_US",
                 "stats": {
-                    "donePercentage": 34.87954,
+                    "donePercentage": 86.234,
                     "untranslatedCount": 6149,
                     "unverifiedCount": 22902
                 }

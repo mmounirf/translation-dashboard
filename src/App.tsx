@@ -1,5 +1,5 @@
 import './App.scss';
-import { Dashboard} from 'src/pages';
+import { Dashboard } from 'src/components/pages';
 import data from 'src/assets/languages.json';
 import Autocomplete from './components/molecules/Autocomplete/Autocomplete';
 import { Chip, SvgIcon } from 'src/components/atoms';

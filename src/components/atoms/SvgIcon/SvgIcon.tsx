@@ -5,11 +5,13 @@ interface Props {
     width?: number;
     height?: number;
     color?: string;
+    className?: string;
 }
 
-function SvgIcon({ Icon, width = 10, height = 10, color = 'black', ...rest }: Props) {
+function SvgIcon({ Icon, width = 10, height = 10, color = 'black', className = '' }: Props) {
+    const iconContainerClass = `svg-icon-container ${className}`
     return (
-        <div className="svg-icon-container" style={{width, height}}>
+        <div className={iconContainerClass}>
             <Icon width={width} height={height} fill={color} />
         </div>
     )

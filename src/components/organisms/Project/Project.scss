@@ -1,0 +1,97 @@
+@import '/src/styles/varibles.scss';
+@import '/src/styles/mixins.scss';
+
+.project {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__title {
+        color: $color-primary;
+        font-size: 21px;
+        font-weight: normal;
+        margin: 0;
+    }
+
+    .progress {
+        margin: 12px 0;
+    }
+
+    &__sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+        @include media(desktop) {
+            width: 20%;
+            margin-bottom: 0;
+        }
+
+        .summary__item {
+            flex: 0 0 50%;
+        }
+
+        .progress {
+            margin: 20px 0;
+        }
+
+        .actions {
+            .action {
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                > svg { 
+                    fill: $color-white;
+                }
+
+                &--upload {
+                    background-color: $color-jet-stream;
+                }
+                &--download {
+                    background-color: $color-pale-chestnut;
+                }
+                &--tasks {
+                    background-color: $color-pastel-gray;
+                }
+                &--team {
+                    background-color: $color-american-silver-2;
+                }
+                &--activity {
+                    background-color: $color-lavender-gray;
+                }
+                &--screenshots {
+                    background-color: $color-desert-sand;
+                }
+                &--glossary {
+                    background-color: $color-beau-blue;
+                }
+            }
+
+        }
+    }
+
+    &__divider {
+        display: none;
+        @include media(desktop) {
+            display: block;
+            width: 1px;
+            background-color: $color-chinese-silver;
+            margin: 0 20px;
+        }
+    }
+
+    &__languages {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
+        grid-gap: 30px;
+
+        .language {
+            &__name {
+                margin-left: 10px;
+                font-size: 13px;
+                text-decoration: none;
+                color: $color-primary;
+            }
+        }
+    }
+}

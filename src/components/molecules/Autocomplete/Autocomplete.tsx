@@ -1,4 +1,3 @@
-import { EEXIST } from 'constants';
 import { useState, useEffect, useRef } from 'react';
 import './Autocomplete.scss';
 
