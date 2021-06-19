@@ -1,7 +1,6 @@
-import { useState, useEffect, Fragment } from 'react';
+import { EEXIST } from 'constants';
+import { useState, useEffect, useRef } from 'react';
 import './Autocomplete.scss';
-import { Chip, SvgIcon } from 'src/components/atoms';
-import { ReactComponent as CancelIcon } from 'src/assets/icons/Cancel.svg';
 
 interface Props<T> {
     options: T[];
@@ -16,6 +15,8 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
     const [inputValue, setInputValue] = useState('');
     const [selectedOptions, setSelectedOptions] = useState<T[]>([]);
     const [filteredOptions, setFilteredOptions] = useState<T[]>(options);
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const isSelected = (option: T) => selectedOptions.includes(option);
 
     const removeSelectedOption = (option: T) => {
@@ -66,11 +67,19 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
         }
     }, [inputValue]);
 
+    const inputFocus = (e: React.MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
+        if(inputRef && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }
+
     return (
         <div className="autocomplete">
-            <div className="autocomplete__content">
+            <div className="autocomplete__content" onClick={inputFocus}>
                 {_renderSelectedOptions}
                 <input
+                    ref={inputRef}
                     className="autocomplete__input"
                     type="text"
                     value={inputValue}

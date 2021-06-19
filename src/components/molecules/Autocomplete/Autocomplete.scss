@@ -42,6 +42,7 @@
         border: 1px solid $color-chinese-silver;
         max-height: 300px;
         overflow-y: scroll;
+        box-sizing: border-box;
 
         .selected {
             background-color: $color-primary;
