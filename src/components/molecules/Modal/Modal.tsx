@@ -1,4 +1,4 @@
-import { useRef, useEffect, ReactPortal } from 'react';
+import React, { useRef, useEffect, ReactPortal } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
 

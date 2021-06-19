@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import './Autocomplete.scss';
 
 interface Props<T> {
@@ -31,7 +32,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
         onChange(selectedOptions);
     }, [selectedOptions, onChange]);
 
-    const handleSelectedItem = (selectedItem: any, itemId: string) => {
+    const handleSelectedItem = (selectedItem: any) => {
         if (!isSelected(selectedItem)) {
             setSelectedOptions([...selectedOptions, selectedItem]);
         } else {
@@ -42,7 +43,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
         setShowList(false);
     };
 
-    const _renderOptionsList = () => {
+    const _renderOptionsList = useCallback(() => {
         if (!filteredOptions.length) {
             return (
                 <li className="autocomplete__options--no-results">
@@ -51,7 +52,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
             );
         }
         return filteredOptions.map((option: any) => renderOption(option, handleSelectedItem, selectedOptions));
-    };
+    }, [filteredOptions]);
 
     useEffect(() => {
         if (inputValue) {
@@ -66,16 +67,23 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
         }
     }, [inputValue, options, searchableValue]);
 
-    const inputFocus = (e: React.MouseEvent<HTMLElement>) => {
-        e.stopPropagation();
-        if(inputRef && inputRef.current) {
+    function _forceInputFocus() {
+        if (inputRef && inputRef.current) {
             inputRef.current.focus();
         }
     }
 
+    function _onInputFocus() {
+        setShowList(true);
+    }
+
+    function _onAutocompleteChange({ target }: React.ChangeEvent<HTMLInputElement>) {
+        setInputValue(target.value);
+    }
+
     return (
         <div className="autocomplete">
-            <div className="autocomplete__content" onClick={inputFocus}>
+            <div className="autocomplete__content" onClick={_forceInputFocus}>
                 {_renderSelectedOptions}
                 <input
                     ref={inputRef}
@@ -83,8 +91,8 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
                     type="text"
                     value={inputValue}
                     autoComplete="off"
-                    onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => setInputValue(target.value)}
-                    onFocus={() => setShowList(true)}
+                    onChange={_onAutocompleteChange}
+                    onFocus={_onInputFocus}
                 />
             </div>
             {showList && <div className="autocomplete__options">{_renderOptionsList()}</div>}

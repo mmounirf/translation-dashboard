@@ -1,3 +1,4 @@
+import React from 'react';
 import './Button.scss';
 
 interface Props {
@@ -11,8 +12,14 @@ interface Props {
 function Button({ children, variant = 'primary', type = 'button', className = '', onClick }: Props): JSX.Element {
     const buttonClass = `button button__${variant} ${className}`;
 
+    function _handleButtonClick(event: React.MouseEvent<HTMLElement>) {
+        if (typeof onClick === 'function') {
+            onClick(event);
+        }
+    }
+
     return (
-        <button type={type} className={buttonClass} onClick={(event: React.MouseEvent<HTMLElement>) => onClick && onClick(event)}>
+        <button type={type} className={buttonClass} onClick={_handleButtonClick}>
             {children}
         </button>
     );

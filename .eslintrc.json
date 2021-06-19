@@ -1,0 +1,66 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react-hooks"],
+  "settings": {
+    "react": {
+      "version": "17.0.2"
+    }
+  },
+  "rules": {
+    "radix": "error",
+    "no-new-wrappers": "error",
+    "id-length": ["warn", { "min": 2 }],
+    "curly": "error",
+    "no-mixed-operators": "warn",
+    "no-case-declarations": "off",
+    "no-unused-vars": "off",
+    "no-useless-escape": "off",
+    "no-prototype-builtins": "off",
+    "no-extra-boolean-cast": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "_"
+      }
+    ],
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "react/jsx-no-useless-fragment": "warn",
+    "react/jsx-no-bind": "warn",
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "condition": "parens-new-line",
+        "logical": "parens-new-line",
+        "prop": "parens-new-line"
+      }
+    ],
+    "react/display-name": "warn",
+    "react/prop-types": "off",
+    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": false }],
+    "max-len": ["error", { "code": 160 }],
+    "react/no-this-in-sfc": "error",
+    "no-trailing-spaces": ["warn"]
+  }
+}

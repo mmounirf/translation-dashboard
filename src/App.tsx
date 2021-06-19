@@ -1,11 +1,10 @@
-import './App.scss';
+import React from 'react';
 import { Dashboard } from './components/pages';
 
-function App(): JSX.Element {
+import './App.scss';
 
-    return (
-        <Dashboard />
-    )
+function App(): JSX.Element {
+    return <Dashboard />;
 }
 
 export default App;

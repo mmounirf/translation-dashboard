@@ -1,11 +1,15 @@
-import './Project.scss';
+import React, { useState } from 'react';
+
 import { Progress, Button, SvgIcon } from 'src/components/atoms';
 import { SummaryItem } from 'src/components/atoms/Summary/Summary';
-import useLanguages from 'src/hooks/useLanguages';
-import { ArrowDown, ArrowUp, Book, Camera, Chart, Checkmark, User } from 'src/assets/icons';
-import useLocalStorage from '../../../hooks/useLocalstorage';
-import { useState } from 'react';
+
 import { AddLanguageModal } from 'src/components/organisms';
+
+import { useLanguages, useLocalstorage } from 'src/hooks';
+
+import { ArrowDown, ArrowUp, Book, Camera, Chart, Checkmark, User } from 'src/assets/icons';
+
+import './Project.scss';
 
 interface Language {
     id: string;
@@ -33,30 +37,37 @@ interface Props {
 function Project(props: Props): JSX.Element {
     const { id, name, progress, stats, langs } = props;
     const { done, baseWords, teamsCount, keysCount, qaCount } = stats;
-    const [languages, setLanguages] = useLocalStorage(`@translation-dashboard/${id}/languages`, JSON.stringify(langs));
+    const [languages, setLanguages] = useLocalstorage(`@translation-dashboard/${id}/languages`, JSON.stringify(langs));
     const [showModal, setShowModal] = useState(false);
     const languagesByKeys = useLanguages();
 
-    const modalCloseHandler = (data: any[] | null) => {
-        if(data) {
-            const newLanguages = [...languages, ...data.map(lang => {
-                return {
-                    id: lang,
-                    stats: {
-                        donePercentage: 0,
-                        untranslatedCount: keysCount,
-                        unverifiedCount: 0
-                    }
-                }
-            })];
+    function _modalCloseHandler(data: any[] | null) {
+        if (data) {
+            const newLanguages = [
+                ...languages,
+                ...data.map((lang) => {
+                    return {
+                        id: lang,
+                        stats: {
+                            donePercentage: 0,
+                            untranslatedCount: keysCount,
+                            unverifiedCount: 0
+                        }
+                    };
+                })
+            ];
             setLanguages(JSON.stringify(newLanguages));
         }
-        setShowModal(false)
+        setShowModal(false);
+    }
+
+    function _onAddLanguageClick() {
+        setShowModal(true);
     }
 
     return (
         <div className="project">
-            <AddLanguageModal openModal={showModal} onClose={modalCloseHandler} projectId={id} />
+            <AddLanguageModal openModal={showModal} onClose={_modalCloseHandler} projectId={id} />
             <div className="project__sidebar">
                 <h1 className="project__title">{name}</h1>
                 <Progress value={progress} />
@@ -74,7 +85,7 @@ function Project(props: Props): JSX.Element {
                     <SvgIcon Icon={User} width={15} height={15} className="action action--team" />
                     <SvgIcon Icon={Chart} width={15} height={15} className="action action--activity" />
                     <SvgIcon Icon={Camera} width={15} height={15} className="action action--screenshots" />
-                    <SvgIcon Icon={Book} width={15} height={15} className="action action--glossary "/>
+                    <SvgIcon Icon={Book} width={15} height={15} className="action action--glossary " />
                 </div>
             </div>
             <div className="project__divider" />
@@ -86,7 +97,9 @@ function Project(props: Props): JSX.Element {
                         <div className="language" key={id}>
                             <div className="language__header">
                                 <img width="14px" src={languagesByKeys[id].flag} alt="flag" />
-                                <a href={id} className="language__name">{languagesByKeys[id].name}</a>
+                                <a href={id} className="language__name">
+                                    {languagesByKeys[id].name}
+                                </a>
                             </div>
                             <Progress value={donePercentage} />
                             <div className="summary">
@@ -95,10 +108,12 @@ function Project(props: Props): JSX.Element {
                                 <SummaryItem label="Unverified" value={unverifiedCount} linkTo="#unverified" />
                             </div>
                         </div>
-                    )
+                    );
                 })}
                 <div className="project_add-language">
-                    <Button variant="secondary" onClick={() => setShowModal(true)}>Add Language</Button>
+                    <Button variant="secondary" onClick={_onAddLanguageClick}>
+                        Add Language
+                    </Button>
                 </div>
             </div>
         </div>

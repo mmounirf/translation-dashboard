@@ -1,3 +1,4 @@
+import React from 'react';
 import './Summary.scss';
 
 interface SummaryItemProps {
@@ -10,8 +11,8 @@ interface SummaryItemProps {
 type Props = Array<SummaryItemProps>;
 
 export function SummaryItem({ label, value, isPercentage, linkTo }: SummaryItemProps) {
-    const _renderValueText = isPercentage ? `${Math.round(value)}%` : value;
-    const _renderValueElement = (valueText: string | number) =>
+    const renderValueText = isPercentage ? `${Math.round(value)}%` : value;
+    const renderValueElement = (valueText: string | number) =>
         linkTo ? (
             <a className="value" href={linkTo}>
                 {valueText}
@@ -23,17 +24,18 @@ export function SummaryItem({ label, value, isPercentage, linkTo }: SummaryItemP
     return (
         <div className="summary__item">
             <p className="label">{label}</p>
-            {_renderValueElement(_renderValueText)}
+            {renderValueElement(renderValueText)}
         </div>
     );
 }
 
-function Summary(props: Props): JSX.Element {
+function Summary(props: Props) {
     return (
         <div className="summary">
-            {props.map((item, i) => (
-                <SummaryItem key={`${item.label}_${i}`} {...item} />
-            ))}
+            {props.map((item, index) => {
+                const key = `${item.label}_${index}`;
+                return <SummaryItem key={key} {...item} />;
+            })}
         </div>
     );
 }

@@ -1,4 +1,5 @@
-import './SvgIcon.scss'
+import React from 'react';
+import './SvgIcon.scss';
 
 interface Props {
     Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -9,12 +10,12 @@ interface Props {
 }
 
 function SvgIcon({ Icon, width = 10, height = 10, color = 'black', className = '' }: Props) {
-    const iconContainerClass = `svg-icon-container ${className}`
+    const iconContainerClass = `svg-icon-container ${className}`;
     return (
         <div className={iconContainerClass}>
             <Icon width={width} height={height} fill={color} />
         </div>
-    )
+    );
 }
 
 export default SvgIcon;

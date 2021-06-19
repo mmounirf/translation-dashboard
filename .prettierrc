@@ -2,7 +2,6 @@
     "arrowParens": "always",
     "bracketSpacing": true,
     "endOfLine": "lf",
-    "importOrderSeparation": true,
     "jsxBracketSameLine": false,
     "jsxSingleQuote": false,
     "printWidth": 160,
