@@ -56,7 +56,7 @@ function Project(props: Props): JSX.Element {
 
     return (
         <div className="project">
-            <AddLanguageModal openModal={showModal} onClose={modalCloseHandler} />
+            <AddLanguageModal openModal={showModal} onClose={modalCloseHandler} projectId={id} />
             <div className="project__sidebar">
                 <h1 className="project__title">{name}</h1>
                 <Progress value={progress} />

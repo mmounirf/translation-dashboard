@@ -4,16 +4,21 @@ import { ReactComponent as CancelIcon } from 'src/assets/icons/Cancel.svg';
 import data from 'src/assets/languages.json';
 import './AddLanguageModal.scss';
 import { useState, useEffect } from 'react';
+import useLocalStorage from 'src/hooks/useLocalstorage';
 
 interface Props {
     openModal: boolean;
+    projectId: string;
     onClose: (data: any[] | null) => void;
 }
 
 export default function AddLanguageModal(props: Props) {
-    const { openModal, onClose } = props;
+    const { openModal, onClose, projectId } = props;
     const [showModal, setShowModal] = useState(false);
     const [selectedLanguages, setSelectedLanguages] = useState<any[]>([]);
+    const [languages] = useLocalStorage(`@translation-dashboard/${projectId}/languages`);
+    const previouslySelectedLangauges = languages.map((lang: any) => lang.id);
+    const languagesToAdd = data.filter(lang => !previouslySelectedLangauges.includes(lang.id));
 
     useEffect(() => {
         setShowModal(openModal)
@@ -36,7 +41,7 @@ export default function AddLanguageModal(props: Props) {
         <div className="add-languages-modal">
             <Modal title="Add Languages" showModal={showModal} close={modalCloseHandler}>
             <Autocomplete
-                options={data}
+                options={languagesToAdd}
                 searchableValue="name"
                 onChange={(selectedOptions) => setSelectedLanguages(selectedOptions)}
                 renderSelectedOptions={(selectedOption, removeSelectedOption) => {

@@ -2,6 +2,7 @@
 @import '/src/styles/mixins.scss';
 
 .autocomplete {
+    position: relative;
     &__content {
         border: 1px solid $color-chinese-silver;
         padding: 5px 15px 0px 4px;
@@ -43,6 +44,7 @@
         max-height: 300px;
         overflow-y: scroll;
         box-sizing: border-box;
+        position: absolute;
 
         .selected {
             background-color: $color-primary;

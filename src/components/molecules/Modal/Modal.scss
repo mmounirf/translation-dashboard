@@ -31,12 +31,6 @@
         }
     }
 
-    &__content {
-        max-height: 391px;
-        overflow-y: scroll;
-        padding-right: 10px;
-    }
-
     &--backdrop {
         background-color: $color-black-50;
     }
