@@ -3,6 +3,9 @@ import { Progress, Button, SvgIcon } from 'src/components/atoms';
 import { SummaryItem } from 'src/components/atoms/Summary/Summary';
 import useLanguages from 'src/hooks/useLanguages';
 import { ArrowDown, ArrowUp, Book, Camera, Chart, Checkmark, User } from 'src/assets/icons';
+import useLocalStorage from '../../../hooks/useLocalstorage';
+import { useState } from 'react';
+import { AddLanguageModal } from 'src/components/organisms';
 
 interface Language {
     id: string;
@@ -30,10 +33,30 @@ interface Props {
 function Project(props: Props): JSX.Element {
     const { id, name, progress, stats, langs } = props;
     const { done, baseWords, teamsCount, keysCount, qaCount } = stats;
+    const [languages, setLanguages] = useLocalStorage(`@translation-dashboard/${id}/languages`, JSON.stringify(langs));
+    const [showModal, setShowModal] = useState(false);
     const languagesByKeys = useLanguages();
+
+    const modalCloseHandler = (data: any[] | null) => {
+        if(data) {
+            const newLanguages = [...languages, ...data.map(lang => {
+                return {
+                    id: lang,
+                    stats: {
+                        donePercentage: 0,
+                        untranslatedCount: keysCount,
+                        unverifiedCount: 0
+                    }
+                }
+            })];
+            setLanguages(JSON.stringify(newLanguages));
+        }
+        setShowModal(false)
+    }
 
     return (
         <div className="project">
+            <AddLanguageModal openModal={showModal} onClose={modalCloseHandler} />
             <div className="project__sidebar">
                 <h1 className="project__title">{name}</h1>
                 <Progress value={progress} />
@@ -56,13 +79,13 @@ function Project(props: Props): JSX.Element {
             </div>
             <div className="project__divider" />
             <div className="project__languages">
-                {langs.map((lang) => {
+                {languages.map((lang: Language) => {
                     const { id, stats } = lang;
                     const { donePercentage, untranslatedCount, unverifiedCount } = stats;
                     return (
                         <div className="language" key={id}>
                             <div className="language__header">
-                                <img width="14px" src={languagesByKeys[id].flag} />
+                                <img width="14px" src={languagesByKeys[id].flag} alt="flag" />
                                 <a href={id} className="language__name">{languagesByKeys[id].name}</a>
                             </div>
                             <Progress value={donePercentage} />
@@ -75,7 +98,7 @@ function Project(props: Props): JSX.Element {
                     )
                 })}
                 <div className="project_add-language">
-                    <Button variant="secondary">Add Language</Button>
+                    <Button variant="secondary" onClick={() => setShowModal(true)}>Add Language</Button>
                 </div>
             </div>
         </div>

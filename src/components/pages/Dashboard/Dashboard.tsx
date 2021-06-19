@@ -5,7 +5,6 @@ import projectsData from 'src/assets/data.json';
 
 
 function Dashboard(): JSX.Element {
-
     const _renderProjects = projectsData.map((project) => {
         const { id } = project
         return (

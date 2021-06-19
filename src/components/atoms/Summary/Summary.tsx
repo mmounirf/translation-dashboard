@@ -1,15 +1,15 @@
 import './Summary.scss';
 
-interface SummaryItem {
+interface SummaryItemProps {
     label: string;
     value: number;
     isPercentage?: boolean;
     linkTo?: string;
 }
 
-type Props = Array<SummaryItem>;
+type Props = Array<SummaryItemProps>;
 
-export function SummaryItem({ label, value, isPercentage, linkTo }: SummaryItem) {
+export function SummaryItem({ label, value, isPercentage, linkTo }: SummaryItemProps) {
     const _renderValueText = isPercentage ? `${Math.round(value)}%` : value;
     const _renderValueElement = (valueText: string | number) =>
         linkTo ? (

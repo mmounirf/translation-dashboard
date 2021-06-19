@@ -1,0 +1,10 @@
+.add-languages-modal {
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+        .button {
+            margin-left: 10px;
+        }
+    }
+}

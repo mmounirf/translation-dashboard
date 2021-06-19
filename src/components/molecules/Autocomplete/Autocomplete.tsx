@@ -29,7 +29,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
 
     useEffect(() => {
         onChange(selectedOptions);
-    }, [selectedOptions]);
+    }, [selectedOptions, onChange]);
 
     const handleSelectedItem = (selectedItem: any, itemId: string) => {
         if (!isSelected(selectedItem)) {
@@ -64,7 +64,7 @@ function Autocomplete<T>({ options, searchableValue, onChange, renderSelectedOpt
         } else {
             setFilteredOptions(options);
         }
-    }, [inputValue]);
+    }, [inputValue, options, searchableValue]);
 
     const inputFocus = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
